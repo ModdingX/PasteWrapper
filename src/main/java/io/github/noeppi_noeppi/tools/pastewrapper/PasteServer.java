@@ -1,0 +1,51 @@
+package io.github.noeppi_noeppi.tools.pastewrapper;
+
+import io.github.noeppi_noeppi.tools.pastewrapper.route.DeleteRoute;
+import io.github.noeppi_noeppi.tools.pastewrapper.route.UsePostRoute;
+import io.github.noeppi_noeppi.tools.pastewrapper.route.VersionRoute;
+import io.github.noeppi_noeppi.tools.pastewrapper.route.CreateRoute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import spark.Service;
+
+import java.nio.file.Path;
+
+public class PasteServer {
+
+    private static final Logger logger = LoggerFactory.getLogger(PasteServer.class);
+
+    private final String version;
+    private final Service spark;
+
+    public PasteServer(String version, int port, SslData ssl, int threads, PasteApi api, EditKeyManager mgr) {
+        logger.info("Starting Server on port {}.", port);
+        this.version = version;
+        this.spark = Service.ignite();
+        this.spark.port(port);
+        logger.info("Running on {} threads.", threads);
+        this.spark.threadPool(threads, threads, -1);
+        if (ssl != null) {
+            this.spark.secure(ssl.cert().toAbsolutePath().normalize().toString(), ssl.key(), null, null);
+        } else {
+            logger.warn("Running without SSL.");
+        }
+
+        this.spark.get("/version", new VersionRoute(this.spark, api, mgr, version));
+        this.spark.get("/create", new UsePostRoute(this.spark, api, mgr));
+        this.spark.post("/create", new CreateRoute(this.spark, api, mgr));
+        this.spark.get("/delete/:key", new DeleteRoute(this.spark, api, mgr));
+
+        this.spark.awaitInitialization();
+        logger.info("Server started.");
+    }
+
+    public String version() {
+        return version;
+    }
+
+    public void shutdown() {
+        this.spark.stop();
+    }
+
+    public record SslData(String key, Path cert) {}
+}
