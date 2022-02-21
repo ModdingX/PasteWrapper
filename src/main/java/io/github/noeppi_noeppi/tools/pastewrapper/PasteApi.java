@@ -62,7 +62,6 @@ public class PasteApi {
                 }
             }).body();
 
-            System.out.println(result.data());
             if (result.data() == null) throw new IOException("HTTP status code " + result.code());
             try {
                 JsonObject response = GSON.fromJson(result.data(), JsonObject.class);
