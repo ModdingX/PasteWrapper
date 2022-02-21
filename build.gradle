@@ -67,7 +67,7 @@ task dockerZip(type: Zip) {
 
     classifier 'docker'
 
-    from(jar.archiveFile, { rename { 'server.jar' } })
+    from(jar.archiveFile, { rename { 'main.jar' } })
     from(project.file('build/deps.txt'), { rename { 'deps.txt' } })
     from(rootProject.file('gradle'), { into('gradle') })
     from(rootProject.file('gradlew'), { rename { 'gradlew' } })
