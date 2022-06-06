@@ -34,6 +34,7 @@ public abstract class PasteRoute<T> implements Route {
             response.status(result == null ? 204 : 200);
             if (result != null) {
                 response.header("Content-Type", this.content);
+                response.header("Cache-Control", "no-cache");
             }
             return result;
         } catch (FileNotFoundException e) {

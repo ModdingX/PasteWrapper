@@ -16,7 +16,7 @@ dependencies {
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
     implementation 'com.sparkjava:spark-core:2.9.3'
-    implementation 'com.google.guava:guava:31.0.1-jre'
+    implementation 'com.google.guava:guava:31.1-jre'
     implementation 'com.google.code.gson:gson:2.9.0'
 
     implementation 'org.slf4j:slf4j-api:1.7.36'
@@ -81,9 +81,6 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
             artifact dockerZip
-            groupId = project.group
-            artifactId = project.name
-            version = project.version
             pom {
                 licenses {
                     license {
@@ -97,7 +94,7 @@ publishing {
 
     repositories {
         maven {
-            url rootProject.file('../MinecraftUtilities/maven')
+            url rootProject.file('../moddingx/maven')
         }
     }
 }
