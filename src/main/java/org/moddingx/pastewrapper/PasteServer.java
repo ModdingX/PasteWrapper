@@ -1,9 +1,9 @@
-package io.github.noeppi_noeppi.tools.pastewrapper;
+package org.moddingx.pastewrapper;
 
-import io.github.noeppi_noeppi.tools.pastewrapper.route.DeleteRoute;
-import io.github.noeppi_noeppi.tools.pastewrapper.route.UsePostRoute;
-import io.github.noeppi_noeppi.tools.pastewrapper.route.VersionRoute;
-import io.github.noeppi_noeppi.tools.pastewrapper.route.CreateRoute;
+import org.moddingx.pastewrapper.route.DeleteRoute;
+import org.moddingx.pastewrapper.route.UsePostRoute;
+import org.moddingx.pastewrapper.route.VersionRoute;
+import org.moddingx.pastewrapper.route.CreateRoute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Service;

@@ -1,4 +1,4 @@
-package io.github.noeppi_noeppi.tools.pastewrapper;
+package org.moddingx.pastewrapper;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;

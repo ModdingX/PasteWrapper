@@ -1,10 +1,10 @@
-package io.github.noeppi_noeppi.tools.pastewrapper.route.base;
+package org.moddingx.pastewrapper.route.base;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import io.github.noeppi_noeppi.tools.pastewrapper.EditKeyManager;
-import io.github.noeppi_noeppi.tools.pastewrapper.PasteApi;
+import org.moddingx.pastewrapper.EditKeyManager;
+import org.moddingx.pastewrapper.PasteApi;
 import spark.Request;
 import spark.Response;
 import spark.Service;

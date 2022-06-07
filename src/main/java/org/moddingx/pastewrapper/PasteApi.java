@@ -1,4 +1,4 @@
-package io.github.noeppi_noeppi.tools.pastewrapper;
+package org.moddingx.pastewrapper;
 
 import com.google.gson.*;
 import org.slf4j.Logger;

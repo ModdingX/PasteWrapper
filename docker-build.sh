@@ -6,7 +6,7 @@ ZIP_FILE=$(mktemp)
 BUILD_DIR=$(mktemp -d)
 
 echo "Downloading Image"
-wget "-O" "${ZIP_FILE}" "https://noeppi-noeppi.github.io/MinecraftUtilities/maven/io/github/noeppi_noeppi/tools/PasteWrapper/${1}/PasteWrapper-${1}-docker.zip"
+wget "-O" "${ZIP_FILE}" "https://maven.moddingx.org/org/moddingx/PasteWrapper/${1}/PasteWrapper-${1}-docker.zip"
 
 echo "Extracting Image"
 unzip "${ZIP_FILE}" "-d" "${BUILD_DIR}"

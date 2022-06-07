@@ -1,7 +1,7 @@
-package io.github.noeppi_noeppi.tools.pastewrapper.route.base;
+package org.moddingx.pastewrapper.route.base;
 
-import io.github.noeppi_noeppi.tools.pastewrapper.EditKeyManager;
-import io.github.noeppi_noeppi.tools.pastewrapper.PasteApi;
+import org.moddingx.pastewrapper.EditKeyManager;
+import org.moddingx.pastewrapper.PasteApi;
 import spark.Request;
 import spark.Response;
 import spark.Route;

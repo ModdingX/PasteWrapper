@@ -9,7 +9,7 @@ if os.path.isfile('config.json'):
     with open('config.json', mode='r') as file:
         config = json.loads(file.read())
 
-args = ['java', '-cp', 'main.jar:dependencies/*', 'io.github.noeppi_noeppi.tools.pastewrapper.Main']
+args = ['java', '-cp', 'main.jar:dependencies/*', 'org.moddingx.pastewrapper.Main']
 
 args += ['--docker']
 
