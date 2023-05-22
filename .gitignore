@@ -1,3 +1,6 @@
 .gradle
 .idea
 build
+/paste_token
+/paste_private_key
+/paste_public_key

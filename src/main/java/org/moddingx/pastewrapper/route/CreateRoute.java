@@ -21,7 +21,7 @@ public class CreateRoute extends JsonRoute {
     protected JsonElement apply(Request request, Response response) throws IOException {
         String title = request.queryParams("title");
         String content = request.body();
-        if (content == null) throw this.spark.halt(400, "No Content");
+        if (content == null || content.isEmpty()) throw this.spark.halt(400, "No Content");
         PasteApi.Paste paste = this.api.createPaste(title, content);
         JsonObject json = new JsonObject();
         json.addProperty("url", paste.uri().toString());

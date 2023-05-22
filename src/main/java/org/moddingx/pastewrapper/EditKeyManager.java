@@ -14,6 +14,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+// https://support.google.com/cloudidentity/answer/6342198?hl=en
 public class EditKeyManager {
     
     private final KeyPair keyPair;
