@@ -1,6 +1,7 @@
 package org.moddingx.pastewrapper;
 
 import com.google.gson.*;
+import org.moddingx.pastewrapper.route.CreateRoute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,9 +15,9 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
 public class PasteApi {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(PasteApi.class);
-    
+
     private static final Gson GSON;
 
     static {
@@ -24,7 +25,7 @@ public class PasteApi {
         builder.disableHtmlEscaping();
         GSON = builder.create();
     }
-    
+
     private final String token;
     private final HttpClient client;
 
@@ -34,6 +35,10 @@ public class PasteApi {
     }
 
     public Paste createPaste(@Nullable String title, String content) throws IOException {
+        return this.createPaste(title, content, CreateRoute.DEFAULT_EXPIRATION);
+    }
+
+    public Paste createPaste(@Nullable String title, String content, int expiration) throws IOException {
         try {
             JsonObject json = new JsonObject();
             if (title != null) json.addProperty("description", title);
@@ -43,6 +48,7 @@ public class PasteApi {
             section.addProperty("contents", content);
             sections.add(section);
             json.add("sections", sections);
+            json.addProperty("expiration", expiration);
             String jsonStr = GSON.toJson(json) + "\n";
 
             HttpRequest request = HttpRequest.newBuilder()
@@ -67,7 +73,7 @@ public class PasteApi {
                 JsonObject response = GSON.fromJson(result.data(), JsonObject.class);
                 String id = response.get("id").getAsString();
                 URI uri = URI.create(response.get("link").getAsString());
-                return new Paste(id, uri);
+                return new Paste(id, uri, expiration);
             } catch (JsonSyntaxException | IllegalArgumentException e) {
                 throw new IOException("Invalid response", e);
             }
@@ -76,7 +82,7 @@ public class PasteApi {
             throw new IOException("Interrupted", e);
         }
     }
-    
+
     public void delete(String pasteId) throws IOException {
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -94,7 +100,7 @@ public class PasteApi {
                     return HttpResponse.BodySubscribers.replacing(new Result(info.statusCode(), null));
                 }
             }).body();
-            
+
             if (result.data() == null) throw new IOException("HTTP status code " + result.code());
             try {
                 JsonObject response = GSON.fromJson(result.data(), JsonObject.class);
@@ -107,6 +113,6 @@ public class PasteApi {
             throw new IOException("Interrupted", e);
         }
     }
-    
-    public record Paste(String id, URI uri) {}
+
+    public record Paste(String id, URI uri, int expiration) {}
 }
