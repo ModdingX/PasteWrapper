@@ -35,12 +35,12 @@ public class PasteApi {
     }
 
     public Paste createPaste(@Nullable String title, String content) throws IOException {
-        return this.createPaste(title, content, CreateRoute.DEFAULT_EXPIRATION);
+        return this.createPaste(title, content, CreateRoute.EXPIRATION_ONE_YEAR);
     }
 
     public Paste createPaste(@Nullable String title, String content, int expirationSeconds) throws IOException {
         try {
-            expirationSeconds = Math.min(expirationSeconds, CreateRoute.DEFAULT_EXPIRATION);
+            expirationSeconds = Math.min(expirationSeconds, CreateRoute.EXPIRATION_ONE_YEAR);
             JsonObject json = new JsonObject();
             if (title != null) json.addProperty("description", title);
             JsonArray sections = new JsonArray();
@@ -49,7 +49,7 @@ public class PasteApi {
             section.addProperty("contents", content);
             sections.add(section);
             json.add("sections", sections);
-            json.addProperty("expirationSeconds", expirationSeconds);
+            json.addProperty("expiration", expirationSeconds);
             String jsonStr = GSON.toJson(json) + "\n";
 
             HttpRequest request = HttpRequest.newBuilder()
