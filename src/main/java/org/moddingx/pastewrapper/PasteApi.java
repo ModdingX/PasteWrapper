@@ -38,8 +38,9 @@ public class PasteApi {
         return this.createPaste(title, content, CreateRoute.DEFAULT_EXPIRATION);
     }
 
-    public Paste createPaste(@Nullable String title, String content, int expiration) throws IOException {
+    public Paste createPaste(@Nullable String title, String content, int expirationSeconds) throws IOException {
         try {
+            expirationSeconds = Math.min(expirationSeconds, CreateRoute.DEFAULT_EXPIRATION);
             JsonObject json = new JsonObject();
             if (title != null) json.addProperty("description", title);
             JsonArray sections = new JsonArray();
@@ -48,7 +49,7 @@ public class PasteApi {
             section.addProperty("contents", content);
             sections.add(section);
             json.add("sections", sections);
-            json.addProperty("expiration", expiration);
+            json.addProperty("expirationSeconds", expirationSeconds);
             String jsonStr = GSON.toJson(json) + "\n";
 
             HttpRequest request = HttpRequest.newBuilder()
@@ -73,7 +74,7 @@ public class PasteApi {
                 JsonObject response = GSON.fromJson(result.data(), JsonObject.class);
                 String id = response.get("id").getAsString();
                 URI uri = URI.create(response.get("link").getAsString());
-                return new Paste(id, uri, expiration);
+                return new Paste(id, uri, expirationSeconds);
             } catch (JsonSyntaxException | IllegalArgumentException e) {
                 throw new IOException("Invalid response", e);
             }
@@ -114,5 +115,5 @@ public class PasteApi {
         }
     }
 
-    public record Paste(String id, URI uri, int expiration) {}
+    public record Paste(String id, URI uri, int expirationSeconds) {}
 }
