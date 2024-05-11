@@ -22,7 +22,12 @@ public class CreateRoute extends JsonRoute {
     @Override
     protected JsonElement apply(Request request, Response response) throws IOException {
         String title = request.queryParams("title");
-        int expirationSeconds = request.queryParams("expiration") == null ? EXPIRATION_ONE_YEAR : Integer.parseInt(request.queryParams("expiration"));
+        int expirationSeconds;
+        try {
+            expirationSeconds = request.queryParams("expiration") == null ? EXPIRATION_ONE_YEAR : Integer.parseInt(request.queryParams("expiration"));
+        } catch (NumberFormatException e) {
+            throw this.spark.halt(400, "Invalid expiration seconds: " + request.queryParams("expiration"));
+        }
         String content = request.body();
         if (content == null || content.isEmpty()) throw this.spark.halt(400, "No Content");
         PasteApi.Paste paste = this.api.createPaste(title, content, expirationSeconds);
