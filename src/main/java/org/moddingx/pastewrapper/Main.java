@@ -57,8 +57,6 @@ public class Main {
                 .availableUnless(specDocker, specNoSsl).withRequiredArg().defaultsTo("");
 
         OptionSpec<Integer> specPort = options.accepts("port", "The port to run on.").withRequiredArg().ofType(Integer.class);
-        OptionSpec<Integer> specThreads = options.accepts("threads", "How many threads the server should use.")
-                .withRequiredArg().ofType(Integer.class).defaultsTo(Math.min(4, Runtime.getRuntime().availableProcessors()));
 
         OptionSet set = options.parse(args);
         
@@ -96,7 +94,7 @@ public class Main {
 
         PasteApi api = new PasteApi(token);
         EditKeyManager mgr = EditKeyManager.create(publicKey, privateKey);
-        PasteServer server = new PasteServer(version, port, ssl, set.valueOf(specThreads), api, mgr);
+        PasteServer server = new PasteServer(version, port, ssl, api, mgr);
         Runtime.getRuntime().addShutdownHook(new Thread(server::shutdown));
         logger.info("Initialisation done.");
     }

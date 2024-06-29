@@ -17,13 +17,12 @@ public class PasteServer {
     private final String version;
     private final Service spark;
 
-    public PasteServer(String version, int port, SslData ssl, int threads, PasteApi api, EditKeyManager mgr) {
+    public PasteServer(String version, int port, SslData ssl, PasteApi api, EditKeyManager mgr) {
         logger.info("Starting Server on port {}.", port);
         this.version = version;
         this.spark = Service.ignite();
         this.spark.port(port);
-        logger.info("Running on {} threads.", threads);
-        this.spark.threadPool(threads, threads, -1);
+        this.spark.withVirtualThread();
         if (ssl != null) {
             this.spark.secure(ssl.cert().toAbsolutePath().normalize().toString(), ssl.key(), null, null);
         } else {
