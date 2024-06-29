@@ -1,9 +1,6 @@
 package org.moddingx.pastewrapper;
 
 import com.google.gson.*;
-import org.moddingx.pastewrapper.route.CreateRoute;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -16,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 
 public class PasteApi {
 
-    private static final Logger logger = LoggerFactory.getLogger(PasteApi.class);
+    public static final int MAXIMUM_EXPIRATION = 60 * 60 * 24 * 365;
 
     private static final Gson GSON;
 
@@ -35,12 +32,12 @@ public class PasteApi {
     }
 
     public Paste createPaste(@Nullable String title, String content) throws IOException {
-        return this.createPaste(title, content, CreateRoute.EXPIRATION_ONE_YEAR);
+        return this.createPaste(title, content, MAXIMUM_EXPIRATION);
     }
 
     public Paste createPaste(@Nullable String title, String content, int expirationSeconds) throws IOException {
         try {
-            expirationSeconds = Math.min(expirationSeconds, CreateRoute.EXPIRATION_ONE_YEAR);
+            expirationSeconds = Math.min(expirationSeconds, MAXIMUM_EXPIRATION);
             JsonObject json = new JsonObject();
             if (title != null) json.addProperty("description", title);
             JsonArray sections = new JsonArray();
