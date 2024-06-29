@@ -30,6 +30,14 @@ public class PasteServer {
             logger.warn("Running without SSL.");
         }
 
+        // Support trailing slashes
+        this.spark.before((req, res) -> {
+            String path = req.pathInfo();
+            if (path.length() > 1 && path.endsWith("/")) {
+                res.redirect(path.substring(0, path.length() - 1));
+            }
+        });
+
         this.spark.get("/version", new VersionRoute(this.spark, api, mgr, version));
         this.spark.get("/create", new UsePostRoute(this.spark, api, mgr));
         this.spark.post("/create", new CreateRoute(this.spark, api, mgr));

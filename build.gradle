@@ -1,25 +1,27 @@
-import java.nio.file.Files
-
-apply plugin: 'java-library'
-apply plugin: 'application'
-apply plugin: 'maven-publish'
+plugins {
+    id 'java-library'
+    id 'application'
+    id 'maven-publish'
+}
 
 group 'org.moddingx'
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation 'org.jetbrains:annotations:24.1.0'
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
-    implementation 'com.sparkjava:spark-core:2.9.4'
-    implementation 'com.google.guava:guava:31.1-jre'
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'org.zoomba-lang:spark-core:3.0'
+    implementation 'com.google.guava:guava:33.2.1-jre'
+    implementation 'com.google.code.gson:gson:2.11.0'
 
-    implementation 'org.slf4j:slf4j-api:2.0.7'
-    runtimeOnly 'org.slf4j:slf4j-jdk14:2.0.7'
+    implementation 'org.slf4j:slf4j-api:2.0.13'
+    runtimeOnly 'org.slf4j:slf4j-jdk14:2.0.13'
+    
+    implementation(platform('org.eclipse.jetty:jetty-bom')) { version { strictly '[11.0.21,12.0.0)' } }
 }
 
 application.mainClass = "org.moddingx.pastewrapper.Main"
@@ -32,10 +34,16 @@ jar {
     ])
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+            artifact sourcesJar
             pom {
                 licenses {
                     license {
@@ -49,7 +57,9 @@ publishing {
 
     repositories {
         maven {
-            url rootProject.file('../moddingx/maven')
+            name 'moddingx'
+            url 'https://maven.moddingx.org/release'
+            credentials(PasswordCredentials)
         }
     }
 }
