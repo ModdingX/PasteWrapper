@@ -1,8 +1,8 @@
 package org.moddingx.pastewrapper;
 
 import com.google.gson.*;
+import jakarta.annotation.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
